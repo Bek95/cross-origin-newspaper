@@ -26,6 +26,11 @@
                 <input type="date" name="date" value="{{ request('date') ? \Carbon\Carbon::parse(request('date'))->format('d-m-Y') : '' }}" class="form-control">
             </div>
 
+            <div class="col-md-3">
+                <label class="form-label">Mots-clés</label>
+                <input type="text" name="keywords" value="{{ $filters['keywords'] ?? '' }}" class="form-control" placeholder="Ex: sport, politique">
+            </div>
+
             <div class="col-md-3 d-flex align-items-end">
                 <button type="submit" class="btn btn-primary w-50">Filtrer</button>
                 <a href="{{ route('articles.index') }}" class="btn btn-secondary w-50">Réinitialiser</a>
