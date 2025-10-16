@@ -8,9 +8,16 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-    <div class="container">
-        <a class="navbar-brand" href="{{ url('/') }}">Cross-Origin Newspaper</a>
+    <div class="container d-flex flex-end">
+        <div>
+            <a class="navbar-brand" href="{{ route('home') }}">Cross-Origin Newspaper</a>
+        </div>
+        <div>
+            <a class="navbar-brand" href="{{ route('home') }}">Accueil</a>
+            <a class="navbar-brand" href="{{ route('articles.index') }}">Articles</a>
+        </div>
     </div>
+
 </nav>
 
 <div class="container">
