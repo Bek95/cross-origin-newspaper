@@ -29,6 +29,7 @@ return [
     'env' => env('APP_ENV', 'production'),
     'api_source_base_url' => env('API_SOURCE_BASE_URL', ''),
     'lequipe_api_token' => env('LEQUIPE_API_TOKEN', ''),
+    'le_parisien_api_token' => env('LE_PARISIEN_API_TOKEN', ''),
 
     /*
     |--------------------------------------------------------------------------
