@@ -17,7 +17,7 @@ class PressOrchestrator
     /**
      * Récupère les articles de une pour toutes les sources.
      */
-    public function fetchAllFrontpages(): array
+    public function fetchAllFrontpages(?array $options = null): array
     {
         $results = [];
 
@@ -25,7 +25,7 @@ class PressOrchestrator
             try {
                 $sourceName = class_basename($service);
 
-                $articles = $service->fetchFrontpage();
+                $articles = $service->fetchFrontpage($options);
 
                 $results[$sourceName] = [
                     'status' => 'success',

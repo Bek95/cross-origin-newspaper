@@ -6,7 +6,8 @@ use App\Application\Press\PressOrchestrator;
 use Illuminate\Support\ServiceProvider;
 use App\Domain\Press\Services\{SourceServices\LeMondeService,
     SourceServices\LeParisienService,
-    SourceServices\LequipeService};
+    SourceServices\LequipeService,
+    SourceServices\LiberationService};
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -22,6 +23,7 @@ class RepositoryServiceProvider extends ServiceProvider
                 $app->make(LeMondeService::class),
                 $app->make(LequipeService::class),
                 $app->make(LeParisienService::class),
+                $app->make(LiberationService::class),
             ]);
         });
     }

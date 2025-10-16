@@ -9,9 +9,13 @@ class LequipeService implements SourceServiceInterface
 {
     const URI = '/lequipe';
 
-    public function fetchFrontpage(): array
+    public function fetchFrontpage(?array $options = null): array
     {
-        $formattedDate = Carbon::now('+07:00')->toIso8601String();
+        $date = isset($options['date'])
+            ? Carbon::parse($options['date'])
+            : Carbon::now('+07:00');
+
+        $formattedDate = $date->toIso8601String();
 
         $response = Http::get(config('app.api_source_base_url') . self::URI, [
             'token' => config('app.lequipe_api_token'),
@@ -20,6 +24,10 @@ class LequipeService implements SourceServiceInterface
         ]);
 
         if ($response->failed()) {
+            \Log::error('API LEQUIPE failed', [
+                'status' => $response->status(),
+                'body' => $response->body(),
+            ]);
             return [];
         }
 
