@@ -4,6 +4,34 @@
     <div class="min-h-screen flex flex-col justify-start bg-gray-50 p-6">
         <h1 class="text-2xl font-bold mb-6">Articles</h1>
 
+        <form method="GET" action="{{ route('articles.index') }}" class="row g-3 mb-4">
+            <div class="col-md-3">
+                <label class="form-label">Journal</label>
+                <select name="source" class="form-select">
+                    <option value="">Tous</option>
+                    <option value="Le Monde" {{ request('source') == 'Le Monde' ? 'selected' : '' }}>Le Monde</option>
+                    <option value="Le Parisien" {{ request('source') == 'Le Parisien' ? 'selected' : '' }}>Le Parisien</option>
+                    <option value="L'Équipe" {{ request('source') == "L'Équipe" ? 'selected' : '' }}>L'Équipe</option>
+                    <option value="Libération" {{ request('source') == 'Libération' ? 'selected' : '' }}>Libération</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Catégorie</label>
+                <input type="text" name="category" value="{{ request('category') }}" class="form-control" placeholder="ex: Sport">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Date (JJ-MM-AAAA)</label>
+                <input type="date" name="date" value="{{ request('date') ? \Carbon\Carbon::parse(request('date'))->format('d-m-Y') : '' }}" class="form-control">
+            </div>
+
+            <div class="col-md-3 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-50">Filtrer</button>
+                <a href="{{ route('articles.index') }}" class="btn btn-secondary w-50">Réinitialiser</a>
+            </div>
+        </form>
+
         @if($articles->isEmpty())
             <p class="text-gray-500 text-center mt-auto mb-auto">Aucun article disponible.</p>
         @else
@@ -37,3 +65,4 @@
         @endif
     </div>
 @endsection
+
