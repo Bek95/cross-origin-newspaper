@@ -6,9 +6,7 @@ use App\Application\Press\PressOrchestrator;
 use App\Domain\Press\Repositories\ArticleRepositoryInterface;
 use App\Domain\Press\Repositories\EloquentArticleRepository;
 use Illuminate\Support\ServiceProvider;
-use App\Domain\Press\Services\{
-    SourceServices\LeMondeService,
-};
+use App\Domain\Press\Services\{SourceServices\LeMondeService, SourceServices\LequipeService};
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -22,6 +20,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(PressOrchestrator::class, function ($app) {
             return new PressOrchestrator([
                 $app->make(LeMondeService::class),
+                $app->make(LequipeService::class),
             ]);
         });
     }

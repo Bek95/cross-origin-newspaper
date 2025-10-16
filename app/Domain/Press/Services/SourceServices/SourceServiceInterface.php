@@ -2,7 +2,6 @@
 
 namespace App\Domain\Press\Services\SourceServices;
 
-use Carbon\Carbon;
 
 interface SourceServiceInterface
 {
@@ -11,6 +10,6 @@ interface SourceServiceInterface
 *
 * @return array
 */
-public function fetchFrontpage(string $date): array;
+public function fetchFrontpage(): array;
 
 }
