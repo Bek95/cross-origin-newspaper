@@ -3,10 +3,10 @@
 namespace App\Providers;
 
 use App\Application\Press\PressOrchestrator;
-use App\Domain\Press\Repositories\ArticleRepositoryInterface;
-use App\Domain\Press\Repositories\EloquentArticleRepository;
 use Illuminate\Support\ServiceProvider;
-use App\Domain\Press\Services\{SourceServices\LeMondeService, SourceServices\LequipeService};
+use App\Domain\Press\Services\{SourceServices\LeMondeService,
+    SourceServices\LeParisienService,
+    SourceServices\LequipeService};
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -21,6 +21,7 @@ class RepositoryServiceProvider extends ServiceProvider
             return new PressOrchestrator([
                 $app->make(LeMondeService::class),
                 $app->make(LequipeService::class),
+                $app->make(LeParisienService::class),
             ]);
         });
     }
