@@ -9,10 +9,9 @@ class LeParisienService implements SourceServiceInterface
 {
     const URI = '/leparisien';
 
-    public function fetchFrontpage(): array
+    public function fetchFrontpage(?array $options = null): array
     {
-        // Conversion de la date en timestamp Unix
-        $timestamp = Carbon::parse(now())->timestamp;
+        $timestamp = $options['publish_date_gte'] ?? Carbon::now()->timestamp;
 
         $response = Http::withHeaders([
             'Accept' => 'application/json',
