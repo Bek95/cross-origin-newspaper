@@ -34,10 +34,6 @@
                     </div>
                 </div>
             </div>
-
-            <footer class="mt-5 text-muted small">
-                &copy; {{ date('Y') }} Cross-Origin Newspaper
-            </footer>
         </div>
     </div>
 @endsection
