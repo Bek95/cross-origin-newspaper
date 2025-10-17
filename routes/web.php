@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ArticleViewController;
@@ -9,6 +10,15 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 
+
+// admin
+Route::middleware(['auth', 'role:admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::patch('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.updateRole');
+    });
 
 Route::get('/', [HomeViewController::class, 'home'])->name('home');
 
