@@ -2,12 +2,14 @@
 
 namespace App\Domain\Press\Services\SourceServices;
 
+use App\Domain\Press\DTO\ArticleData;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 
 class LequipeService implements SourceServiceInterface
 {
     const URI = '/lequipe';
+    const NAME = 'Lequipe';
 
     public function fetchFrontpage(?array $options = null): array
     {
@@ -31,7 +33,23 @@ class LequipeService implements SourceServiceInterface
             return [];
         }
 
-        return $response->json();
+        $rawArticles = $response->json()['data'] ?? [];
+
+        return array_map(fn($a) => new ArticleData(
+            id: $a['id'],
+            title: $a['title'] ?? 'Sans titre',
+            content: $a['content'] ?? '',
+            source: $this->getSourceName(),
+            category: $a['category']['name'] ?? null,
+            publishedAt: Carbon::parse($a['created_at'] ?? now()),
+            keywords: $a['keywords'] ?? [],
+            authors: [implode(' ', $a['authors'] ?? [])],
+        ), $rawArticles);
+    }
+
+    public function getSourceName(): string
+    {
+        return self::NAME;
     }
 
 }

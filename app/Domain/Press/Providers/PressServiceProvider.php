@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Providers;
+namespace App\Domain\Press\Providers;
 
 use App\Application\Press\PressOrchestrator;
-use Illuminate\Support\ServiceProvider;
 use App\Domain\Press\Services\{SourceServices\LeMondeService,
     SourceServices\LeParisienService,
     SourceServices\LequipeService,
     SourceServices\LiberationService};
+use Illuminate\Support\ServiceProvider;
 
-class RepositoryServiceProvider extends ServiceProvider
+class PressServiceProvider extends ServiceProvider
 {
     /**
      * Register services.

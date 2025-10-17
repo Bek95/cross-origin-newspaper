@@ -10,10 +10,10 @@
                     <label class="form-label">Journal</label>
                     <select name="source" class="form-select">
                         <option value="">Tous</option>
-                        <option value="Le Monde" {{ request('source') == 'Le Monde' ? 'selected' : '' }}>Le Monde</option>
-                        <option value="Le Parisien" {{ request('source') == 'Le Parisien' ? 'selected' : '' }}>Le Parisien</option>
-                        <option value="L'Équipe" {{ request('source') == "L'Équipe" ? 'selected' : '' }}>L'Équipe</option>
-                        <option value="Libération" {{ request('source') == 'Libération' ? 'selected' : '' }}>Libération</option>
+                        <option value="{{ \App\Domain\Press\Services\SourceServices\LeMondeService::NAME }}" {{ request('source') == \App\Domain\Press\Services\SourceServices\LeMondeService::NAME ? 'selected' : '' }}>Le Monde</option>
+                        <option value={{ \App\Domain\Press\Services\SourceServices\LeParisienService::NAME }} {{ request('source') == \App\Domain\Press\Services\SourceServices\LeParisienService::NAME ? 'selected' : '' }}>Le Parisien</option>
+                        <option value={{ \App\Domain\Press\Services\SourceServices\LequipeService::NAME }} {{ request('source') == \App\Domain\Press\Services\SourceServices\LequipeService::NAME ? 'selected' : '' }}>L'Équipe</option>
+                        <option value="{{ \App\Domain\Press\Services\SourceServices\LiberationService::NAME }}" {{ request('source') ==  \App\Domain\Press\Services\SourceServices\LiberationService::NAME  ? 'selected' : '' }}>Libération</option>
                     </select>
                 </div>
 
@@ -46,23 +46,30 @@
             <div class="space-y-4 flex-1">
                 @foreach($articles as $article)
                     <div class="p-4 bg-white shadow rounded">
-                        <h2 class="text-lg font-semibold">{{ $article['title'] }}</h2>
+                        <h2 class="text-lg font-semibold">{{ $article->title }}</h2>
 
-                        @if(isset($article['author']['name']))
-                            <p class="text-gray-600 text-sm">Auteur : {{ $article['author']['name'] }}</p>
+                        @if(is_array($article->authors))
+                            <p class="text-gray-600 text-sm">Auteur : {{ implode(' - ', $article->authors) }}</p>
                         @endif
 
-                        @if(isset($article['category']['name']))
-                            <p class="text-gray-600 text-sm">Catégorie : {{ $article['category']['name'] }}</p>
-                        @endif
+                        <p class="text-gray-600 text-sm">Catégorie : {{ $article->category }}</p>
 
-                        <p class="mt-2">{{ $article['content'] ?? 'Pas de contenu.' }}</p>
-                        @if(isset($article['created_at']))
-                            <p class="text-gray-400 text-xs mt-1">Publié le : {{ \Carbon\Carbon::parse($article['created_at'])->format('d/m/Y H:i') }}</p>
-                        @elseif(isset($article['published_at']))
-                            <p class="text-gray-400 text-xs mt-1">Publié le : {{ \Carbon\Carbon::parse($article['published_at'])->format('d/m/Y H:i') }}</p>
-                        @endif
+                        <p class="mt-2">{{ $article->content ?? 'Pas de contenu.' }}</p>
+                        <p class="text-gray-400 text-xs mt-1">Publié le : {{ \Carbon\Carbon::parse($article->publishedAt)->format('d/m/Y') }}</p>
 
+                        {{--Section commentaires --}}
+                        @include('articles._comments', ['article' => $article])
+
+                    @auth
+                            @if(in_array(auth()->user()->role, ['reader', 'admin']))
+                                <div class="d-flex justify-content-end">
+                                    <a href="{{ route('comments.create', ['articleId' => $article->id]) }}?source={{ urlencode($article->title) }}"
+                                       class="btn btn-primary mb-3">
+                                        Ajouter un commentaire
+                                    </a>
+                                </div>
+                            @endif
+                        @endauth
                     </div>
                 @endforeach
             </div>

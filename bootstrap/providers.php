@@ -2,6 +2,7 @@
 
 return [
     App\Providers\AppServiceProvider::class,
-    App\Providers\RepositoryServiceProvider::class,
+    \App\Domain\Press\Providers\PressServiceProvider::class,
     App\Providers\RouteServiceProvider::class,
+    \App\Domain\Comment\Providers\CommentServiceProvider::class,
 ];

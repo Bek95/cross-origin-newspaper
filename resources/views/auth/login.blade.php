@@ -3,6 +3,12 @@
 @section('content')
     <div class="container mt-5">
         <h2>Connexion</h2>
+        @if ($errors->has('email'))
+            <div class="alert alert-danger">
+                {{ $errors->first('email') }}
+            </div>
+        @endif
+
         <form method="POST" action="{{ route('login') }}">
             @csrf
             <div class="mb-3">
