@@ -8,7 +8,6 @@
 </head>
 <body class="d-flex flex-column min-vh-100 bg-light">
 
-{{-- Barre de navigation --}}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
     <div class="container">
         <a class="navbar-brand" href="{{ route('home') }}">{{ config('app.name', 'MonApp') }}</a>
@@ -35,6 +34,13 @@
                             </button>
                         </form>
                     </li>
+                    @if(auth()->check() && auth()->user()->isAdmin())
+                        <li>
+                            <a href="{{ route('admin.users.index') }}" class="btn btn-sm btn-outline-secondary ms-3">
+                                Gestion utilisateurs
+                            </a>
+                        </li>
+                    @endif
                 @else
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('login') }}">Connexion</a>
@@ -47,13 +53,24 @@
         </div>
     </div>
 </nav>
+@if (session('success') || session('error'))
+    <div id="flash-message"
+         class="alert {{ session('success') ? 'alert-success' : 'alert-danger' }} text-center mt-3 w-75 mx-auto">
+        {{ session('success') ?? session('error') }}
+    </div>
 
-{{-- Contenu principal --}}
+    <script>
+        setTimeout(() => {
+            const el = document.getElementById('flash-message');
+            if (el) el.style.display = 'none';
+        }, 4000);
+    </script>
+@endif
+
 <main class="container flex-grow-1">
     @yield('content')
 </main>
 
-{{-- Pied de page --}}
 <footer class="bg-dark text-white text-center py-3 mt-auto">
     &copy; {{ date('Y') }} - {{ config('app.name', 'MonApp') }}
 </footer>
