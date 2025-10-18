@@ -16,7 +16,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary">Envoyer</button>
-            <a href="{{ route('articles.show', $articleId) }}" class="btn btn-secondary">Retour</a>
+            <a href="{{ route('articles.index') }}" class="btn btn-secondary">Retour</a>
         </form>
     </div>
 @endsection
