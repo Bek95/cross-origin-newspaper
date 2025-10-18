@@ -13,14 +13,14 @@ class LeParisienService implements SourceServiceInterface
 
     public function fetchFrontpage(?array $options = null): array
     {
-//        $timestamp = $options['publish_date_gte'] ?? Carbon::now()->timestamp;
-        $timestamp = 1730304142;
+        $timestamp = $options['publish_date_gte'] ?? Carbon::now()->timestamp;
+//        $timestamp = 1730304142;
 
         $response = Http::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'ApiToken ' . config('app.le_parisien_api_token'),
         ])->get(config('app.api_source_base_url') . self::URI, [
-            'publish_date_gte' => 1730304142,
+            'publish_date_gte' => $timestamp,
         ]);
 
         if ($response->failed()) {
