@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domain\Press\Models;
+namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -15,6 +15,10 @@ class User extends Authenticatable
     use Notifiable;
     use HasApiTokens;
 
+    public const ROLE_READER_SIMPLE = 'reader_simple';
+    public const ROLE_READER = 'reader';
+    public const ROLE_ADMIN = 'admin';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -24,6 +28,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -47,5 +52,20 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    public function isReader(): bool
+    {
+        return in_array($this->role, [self::ROLE_READER, self::ROLE_ADMIN]);
+    }
+
+    public function isSimpleReader(): bool
+    {
+        return $this->role === self::ROLE_READER_SIMPLE;
     }
 }

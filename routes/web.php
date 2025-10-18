@@ -1,14 +1,13 @@
 <?php
 
-use App\Http\Controllers\Admin\UserController;
-use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\ArticleViewController;
-use App\Http\Controllers\HomeViewController;
-
-use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\HomeViewController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
 
 
 // admin
@@ -23,7 +22,18 @@ Route::middleware(['auth', 'role:admin'])
 Route::get('/', [HomeViewController::class, 'home'])->name('home');
 
 Route::middleware('auth')->group(function () {
+    //articles
     Route::get('/articles', [ArticleViewController::class, 'index'])->name('articles.index');
+    Route::get('articles/{articleId}', [CommentController::class, 'index'])->name('articles.show');
+
+    //comments
+    Route::get('articles/{articleId}/comments/create', [CommentController::class, 'create'])
+        ->name('comments.create');
+    Route::post('articles/{articleId}/comments', [CommentController::class, 'store'])
+        ->name('comments.store');
+    Route::get('articles/{articleId}/comments', [CommentController::class, 'index'])
+        ->name('comments.index');
+
 });
 
 

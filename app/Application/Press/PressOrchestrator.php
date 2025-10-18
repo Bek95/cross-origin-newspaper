@@ -45,4 +45,21 @@ class PressOrchestrator
 
         return $results;
     }
+
+    public function fetchArticle(string $source, int $id): ?array
+    {
+        foreach ($this->services as $service) {
+            if (strtolower($service->getSourceName()) === strtolower($source)) {
+                $articles = $service->fetchFrontpage();
+                foreach ($articles as $article) {
+                    if (($article['id'] ?? null) === $id) {
+                        return $article;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
 }

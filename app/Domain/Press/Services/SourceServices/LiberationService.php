@@ -2,11 +2,14 @@
 
 namespace App\Domain\Press\Services\SourceServices;
 
+use App\Domain\Press\DTO\ArticleData;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 
 class LiberationService implements SourceServiceInterface
 {
-    const URI = '/lemonde';
+    const URI = '/liberation';
+    const NAME = 'liberation';
 
     public function fetchFrontpage(?array $options = null): array
     {
@@ -20,7 +23,7 @@ class LiberationService implements SourceServiceInterface
             'Authorization' => 'Bearer ' . $token,
         ])->get(config('app.api_source_base_url') . self::URI, [
             'page'   => $options['page'] ?? 1,
-            'min_id' => $options['min_id'] ?? 0,
+            'min_id' => $options['min_id'] ?? 3,
             'sort'   => $options['sort'] ?? 'id,asc',
         ]);
 
@@ -32,7 +35,18 @@ class LiberationService implements SourceServiceInterface
             return [];
         }
 
-        return $response->json();
+        $rawArticles = $response->json()['data'] ?? [];
+
+        return array_map(fn($a) => new ArticleData(
+            id: $a['id'],
+            title: $a['title'] ?? 'Sans titre',
+            content: $a['content'] ?? '',
+            source: $this->getSourceName(),
+            category: $a['category']['name'] ?? null,
+            publishedAt: Carbon::parse($a['published_at'] ?? now()),
+            keywords: $a['keywords'] ?? [],
+            authors: [$a['author'] ?? []],
+        ), $rawArticles);
     }
 
     private function getAccessToken(): ?string
@@ -52,6 +66,11 @@ class LiberationService implements SourceServiceInterface
         }
 
         return $response->json('access_token');
+    }
+
+    public function getSourceName(): string
+    {
+        return self::NAME;
     }
 
 }
