@@ -18,6 +18,7 @@ class ArticleData
         public readonly Carbon $publishedAt,
         public readonly array $keywords = [],
         public readonly array $authors = [],
+        public readonly string $url,
     ) {}
 
     /**
@@ -38,6 +39,7 @@ class ArticleData
             publishedAt: self::parseDate($data),
             keywords: $data['keywords'] ?? [],
             authors: self::extractAuthors($data),
+            url: $data['url'] ?? '',
         );
     }
 
@@ -95,6 +97,7 @@ class ArticleData
             'publishedAt' => $this->publishedAt->toDateTimeString(),
             'keywords' => $this->keywords,
             'authors' => $this->authors,
+            'url' => $this->url,
         ];
     }
 }

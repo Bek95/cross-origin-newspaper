@@ -10,5 +10,4 @@ class EloquentArticleRepository implements ArticleRepositoryInterface
     {
         return Article::with('source')->find($id);
     }
-
 }

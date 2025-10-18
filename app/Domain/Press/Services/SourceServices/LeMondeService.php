@@ -15,12 +15,8 @@ class LeMondeService implements SourceServiceInterface
     {
         $date = $options['date'] ?? now()->format('Y-m-d');
 
-
-        $carbonDate = Carbon::parse($date);
-        $yesterday = $carbonDate->format('Y-m-d');
-
         $response = Http::get(config('app.api_source_base_url') . self::URI, [
-            'date' => $yesterday,
+            'date' => $date,
         ]);
 
         if ($response->failed()) {
@@ -31,9 +27,7 @@ class LeMondeService implements SourceServiceInterface
             return [];
         }
 
-
         $rawArticles = $response->json()['data'] ?? [];
-
 
         return array_map(fn($a) => new ArticleData(
             id: $a['id'],
@@ -43,7 +37,8 @@ class LeMondeService implements SourceServiceInterface
             category: $a['category'] ?? null,
             publishedAt: Carbon::parse($a['publish_date'] ?? now()),
             keywords: $a['keywords'] ?? [],
-            authors: [$a['author']]
+            authors: [$a['author']],
+            url: config('app.api_source_base_url') . self::URI,
         ), $rawArticles);
     }
 

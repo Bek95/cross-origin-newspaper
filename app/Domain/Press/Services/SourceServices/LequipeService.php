@@ -44,6 +44,7 @@ class LequipeService implements SourceServiceInterface
             publishedAt: Carbon::parse($a['created_at'] ?? now()),
             keywords: $a['keywords'] ?? [],
             authors: [implode(' ', $a['authors'] ?? [])],
+            url: config('app.api_source_base_url') . self::URI,
         ), $rawArticles);
     }
 
