@@ -37,15 +37,17 @@ class LiberationService implements SourceServiceInterface
 
         $rawArticles = $response->json()['data'] ?? [];
 
+
         return array_map(fn($a) => new ArticleData(
             id: $a['id'],
             title: $a['title'] ?? 'Sans titre',
             content: $a['content'] ?? '',
             source: $this->getSourceName(),
-            category: $a['category']['name'] ?? null,
+            category: $a['category'] ?? null,
             publishedAt: Carbon::parse($a['published_at'] ?? now()),
             keywords: $a['keywords'] ?? [],
             authors: [$a['author'] ?? []],
+            url: config('app.api_source_base_url') . self::URI,
         ), $rawArticles);
     }
 
