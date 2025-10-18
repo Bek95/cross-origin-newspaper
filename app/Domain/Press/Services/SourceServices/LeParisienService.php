@@ -13,8 +13,8 @@ class LeParisienService implements SourceServiceInterface
 
     public function fetchFrontpage(?array $options = null): array
     {
-//        $timestamp = $options['publish_date_gte'] ?? Carbon::now()->timestamp;
-        $timestamp = 1730304142;
+        $timestamp = $options['publish_date_gte'] ?? Carbon::now()->timestamp;
+//        $timestamp = 1730304142;
 
         $response = Http::withHeaders([
             'Accept' => 'application/json',
