@@ -9,12 +9,6 @@ Créer un fichier .env, pour vous faciliter la tâche, j'ai laissé les identifi
 tout copier. (! Attention, Pratique à ne pas faire, ici c'est exceptionnel, ne jamais mettre des données sensibles, 
 identifiants, etc dans un fichier .env.example)
 
-```
-
-```
-
----
-
 ##Installation & Lancement
 
 ### Prérequis
