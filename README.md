@@ -121,7 +121,8 @@ php artisan press:fetch
 
 
 ## Tests (optionnel)
-Pour lancer les tests unitaires :
+Pour lancer les tests unitaires : (je n'ai pas tout couvert comme test) mais on peut en rajouter d'autres tels que des test 
+fonctionnel / intégration (le login, logout, test sur les articles, filtrages des articles, test d'authorisation, etc...)
 Attention, IL faut rentrer dans le container php-fpm appelé laravel_app
 
 ```bash
