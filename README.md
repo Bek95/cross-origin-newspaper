@@ -122,6 +122,13 @@ php artisan press:fetch
 
 ## Tests (optionnel)
 Pour lancer les tests unitaires :
+Attention, IL faut rentrer dans le container php-fpm appelé laravel_app
+
+---
+docker exec -it laravel_app bash
+---
+
+ensuite vous pouvez jouer la commande test
 
 ```bash
 php artisan test
