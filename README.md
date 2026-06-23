@@ -36,7 +36,7 @@ Cela va :
 Une fois les conteneurs démarrés, exécute les commandes suivantes à l’intérieur du conteneur PHP (ou depuis ton terminal si tu n’utilises pas Docker) :
 
 ```bash
-php artisan migrate
+ docker compose exec app php artisan migrate
 ```
 
 > Cette commande exécute les migrations et crée les tables nécessaires dans la base de données.
@@ -48,7 +48,7 @@ php artisan migrate
 Pour insérer les données de test (dont un **compte admin complet**), exécute :
 
 ```bash
-php artisan db:seed
+docker compose exec app php artisan db:seed
 ```
 
 Identifiants du compte admin :
