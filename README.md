@@ -59,6 +59,12 @@ password : password
 
 ---
 
+## Accès à l'interface
+
+**URL :** `http://localhost:8080`
+
+---
+
 ## API - Endpoints disponibles
 
 ### Récupérer les articles
