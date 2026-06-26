@@ -5,22 +5,23 @@ declare(strict_types=1);
 namespace App\Domain\Comment\Services;
 
 use App\Domain\Comment\Models\Comment;
+use App\Domain\Comment\Repositories\CommentRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
 final class CommentService
 {
+
+    public function __construct(
+        private CommentRepositoryInterface $commentRepository,
+    ) {}
     /**
      * Récupère les commentaires associés à un article.
      */
     public function getCommentsForArticle(int $articleId, int $perPage = 10): LengthAwarePaginator
     {
-        return Comment::query()
-            ->where('article_id', $articleId)
-            ->with('user:id,name,email')
-            ->orderByDesc('created_at')
-            ->paginate($perPage);
+        return $this->commentRepository->getPaginatedByArticle($articleId, $perPage);
     }
 
     /**

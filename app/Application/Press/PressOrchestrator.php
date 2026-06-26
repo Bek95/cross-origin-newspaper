@@ -22,9 +22,9 @@ class PressOrchestrator
         $results = [];
 
         foreach ($this->services as $service) {
-            try {
-                $sourceName = class_basename($service);
+            $sourceName = class_basename($service);
 
+            try {
                 $articles = $service->fetchFrontpage($options);
 
                 $results[$sourceName] = [
@@ -34,7 +34,9 @@ class PressOrchestrator
                 ];
 
             } catch (\Throwable $e) {
-                Log::error("Erreur lors de la récupération des articles pour {$sourceName}: {$e->getMessage()}");
+                Log::error("Erreur lors de la récupération des articles pour {$sourceName}: {$e->getMessage()}", [
+                    'exception' => $e
+                ]);
 
                 $results[$sourceName] = [
                     'status' => 'error',
@@ -46,20 +48,32 @@ class PressOrchestrator
         return $results;
     }
 
+    /**
+     * Récupère un article spécifique.
+     *
+     */
     public function fetchArticle(string $source, int $id): ?array
     {
+        $sourceLower = strtolower($source);
+
         foreach ($this->services as $service) {
-            if (strtolower($service->getSourceName()) === strtolower($source)) {
+            if (strtolower($service->getSourceName()) === $sourceLower) {
+
+                if (method_exists($service, 'fetchArticleById')) {
+                    return $service->fetchArticleById($id);
+                }
+
                 $articles = $service->fetchFrontpage();
                 foreach ($articles as $article) {
                     if (($article['id'] ?? null) === $id) {
                         return $article;
                     }
                 }
+
+                break;
             }
         }
 
         return null;
     }
-
 }

@@ -10,10 +10,9 @@ use Illuminate\View\View;
 
 class CommentController extends \Illuminate\Routing\Controller
 {
-    public function __construct(protected CommentService $commentService, protected CommentOrchestrator $commentOrchestrator)
-    {
-        $this->middleware('auth');
-    }
+    public function __construct(
+        protected CommentService $commentService
+    ){}
 
     /**
      * Affiche la liste des commentaires pour un article.
@@ -32,7 +31,7 @@ class CommentController extends \Illuminate\Routing\Controller
      * Enregistre un nouveau commentaire pour un article.
      */
     public function store(Request $request, int $articleId)
-    {;
+    {
         $validated = $request->validate([
             'content' => 'required|string|max:1000',
             'source' => 'required|string|max:1000',

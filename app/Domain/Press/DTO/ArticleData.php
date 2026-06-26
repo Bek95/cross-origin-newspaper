@@ -3,6 +3,7 @@
 namespace App\Domain\Press\DTO;
 
 use Carbon\Carbon;
+use Throwable;
 
 /**
  * Data Transfer Object représentant un article de presse normalisé.
@@ -29,13 +30,13 @@ class ArticleData
         return new self(
             id: $data['id'] ?? 0,
             title: $data['headlines']['basic']
-            ?? $data['title']
-            ?? 'Sans titre',
+                ?? $data['title']
+                ?? 'Sans titre',
             content: $data['content'] ?? '',
             source: $source,
             category: $data['category']['name']
-            ?? $data['keywords'][0]
-            ?? null,
+                ?? $data['keywords'][0]
+                ?? null,
             publishedAt: self::parseDate($data),
             keywords: $data['keywords'] ?? [],
             authors: self::extractAuthors($data),
@@ -52,8 +53,12 @@ class ArticleData
             return Carbon::createFromTimestamp($data['publish_date']);
         }
 
-        if (!empty($data['publishedAt'])) {
-            return Carbon::parse($data['publishedAt']);
+        if (!empty($data['publishedAt']) && is_string($data['publishedAt'])) {
+            try {
+                return Carbon::parse($data['publishedAt']);
+            } catch (Throwable) {
+                return now();
+            }
         }
 
         return now();
